@@ -193,7 +193,11 @@ GenerateNewToken
 
 | Code | Description |
 | ---- | ----------- |
-| 200 |  |
+| 200 |<code class="body-block is-highlighted language-javascript">
+{
+ "authorization": "Bearer yJhbIkpXCJ9.eyJVc2VyS......."
+}
+</code>  |
 
 ### /B2C/Booking/GetActiveDestinations
 
@@ -218,12 +222,7 @@ Tourist cities have a separate record, often in the form of "state / city" and o
 | Code | Description |
 | ---- | ----------- |
 | 200 |  |
-<code class="body-block is-highlighted language-javascript">
-{
- "authorization": "Bearer yJhbIkpXCJ9.eyJVc2VyS......."
-}
 
-</code>
 ### /B2C/Booking/GetActiveLicences
 
 #### GET
