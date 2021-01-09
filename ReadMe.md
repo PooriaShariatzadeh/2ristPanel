@@ -187,8 +187,8 @@ GenerateNewToken
 
 | Name  | Description | Required | Schema |
 | ----  | ----------- | -------- | ---- |
-| publicKey  | Created in Your Panel | yes | string |
-
+| publicKey  | Created in Panel | Yes | string |
+| privateKey  | Created in Panel | Yes | string |
 ##### Responses
 
 | Code | Description |
@@ -218,7 +218,12 @@ Tourist cities have a separate record, often in the form of "state / city" and o
 | Code | Description |
 | ---- | ----------- |
 | 200 |  |
+<code class="body-block is-highlighted language-javascript">
+{
+ "authorization": "Bearer yJhbIkpXCJ9.eyJVc2VyS......."
+}
 
+</code>
 ### /B2C/Booking/GetActiveLicences
 
 #### GET
