@@ -15,71 +15,107 @@
     "version": "1.3.0"
   },
   "paths": {
-      "/v1/API/GenerateNewToken": {
+    "/v1/API/GenerateNewToken": {
       "post": {
         "tags": [
           "API"
         ],
+        "requestBody": {
+          "content": {
+            "application/json;odata.metadata=minimal;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json;odata.metadata=minimal;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json;odata.metadata=minimal": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json;odata.metadata=full;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json;odata.metadata=full;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json;odata.metadata=full": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json;odata.metadata=none;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json;odata.metadata=none;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json;odata.metadata=none": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/prs.odatatestxx-odata": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetApiToken"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TokenResult"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "406": {
-            "description": "Not Acceptable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
+                  "$ref": "#/components/schemas/ApiAuthorizationToken"
                 }
               }
             }
@@ -1371,6 +1407,30 @@
   },
   "components": {
     "schemas": {
+      "GetApiToken": {
+        "type": "object",
+        "properties": {
+          "publicKey": {
+            "type": "string",
+            "nullable": true
+          },
+          "privateKey": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ApiAuthorizationToken": {
+        "type": "object",
+        "properties": {
+          "authorization": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ResultNotificationViewType": {
         "enum": [
           0,
@@ -1444,16 +1504,6 @@
           "activityCount": {
             "type": "integer",
             "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-	  "TokenResult": {
-        "type": "object",
-        "properties": {
-          "authorization": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
