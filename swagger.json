@@ -1,0 +1,1539 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "2ristPanel RESTful B2C API",
+    "description": "\r\n<h3><a target=\"_blank\" href=\"https://www.aparat.com/v/I5EP3\">ویدیو آموزشی به زبان فارسی</a></h3>\r\n<div>\r\n    <p>The 2ristPanel API allows you to programmatically access to your account with ease.</p>\r\n    <h1 id=\"overview\">Overview</h1>\r\n    <ol>\r\n        <li>\r\n            <p>You need a valid <a href=\"#authentication\">Bearer jwt Token</a> to send requests to the API endpoints. You can get your public and private key from the <a target=\"_blank\" href=\"https://app.2ristpanel.com/Main/Panel/Profile/ApiManagements\">Api Key Managements</a>.</p>\r\n        </li>\r\n        <li>\r\n            <p>The API has an access <a href=\"#time-limits\">Time Limit</a> applied to it.</p>\r\n        </li>\r\n        <li>\r\n            <p>The 2ristPanel API will only respond to secured communication done over HTTPS. HTTP requests will be sent a <code>301</code> redirect to corresponding HTTPS resources.</p>\r\n        </li>\r\n        <li>\r\n            <p>The API calls will respond with appropriate <a href=\"https://en.wikipedia.org/wiki/List_of_HTTP_status_codes\">HTTP status codes</a> for all requests. Within 2ristPanel Client, when a response is received, the status code is highlighted and is accompanied by a help text that indicates the possible meaning of the response code. A <code>200 OK</code> indicates all went well, while <code>4XX</code> or <code>5XX</code> response codes indicate an error from the requesting client or our API servers respectively.</p>\r\n        </li>\r\n    </ol>\r\n    <h1 id=\"authentication\">Authentication</h1>\r\n    <p>An Bearer jwt Token is required to be sent as part of every request to the 2ristPanel API, in the form of an <code>Authorization : Bearer yJhbIkpXCJ9.eyJVc2VyS....... </code> request header.</p>\r\n    <blockquote>\r\n        <p>If you do not have an API Key, you can easily generate one by heading over to the <a href=\"https://app.2ristpanel.com/Main/Panel/Profile/ApiManagements\">Api Key Managements</a></p>\r\n    </blockquote>\r\n    <p>\r\n        An API Public and Private Key tells our API server that the request it received came from you.\r\n        <br />\r\n        you can genrate new token via <a href=\"#operations-API-post_v1_API_GenerateNewToken\">GenerateNewToken</a> Method\r\n        <br />\r\n    </p>\r\n    <h2 id=\"api-key-related-error-response\">API Key related error response</h2>\r\n    <p>If an API Key is missing, malformed, or invalid, you will receive a <code>401 Unauthorised</code> response code and the following JSON response:</p>\r\n    <pre class=\"  language-undefined\"><code class=\"language-undefined\">\r\n    {\r\n    \"message\": \"The Authorization Token is missing Or does not send in the header.\",\r\n    \"title\": \"SessionRevokingMessage\",\r\n    \"notificationViewType\": 1,\r\n    \"notificationType\": 2,\r\n    \"state\": false\r\n    }\r\n</code></pre>\r\n    <h1 id=\"time-limits\">Time Limits</h1>\r\n    <p>After receiving a new token you will have <code>3 minutes</code> to use the token. After the specified time the token will be expired and you must create a new token</p>\r\n</div>\r\n\r\n<h1 id=\"terms-of-use\">API Url's</h1>\r\n\r\n<table>\r\n    <thead>\r\n    <th>API Type</th>\r\n    <th>API URL</th>\r\n    </thead>\r\n    <tbody>\r\n        <tr>\r\n            <td>Test</td>\r\n            <td>https://beta-api.2ristpanel.com</td>\r\n        </tr>\r\n        <tr>\r\n            <td>Production</td>\r\n            <td>https://api.2ristpanel.com</td>\r\n        </tr>\r\n    </tbody>\r\n</table>\r\n\r\n<h1 id=\"dev-env\">Development</h1>\r\n\r\nFor Test Purposes, Download Environment and collection below and import it in Postman\r\n<br />\r\nEnvironment : <a target=\"_blank\" href=\"docs/development.postman_environment.json\">Development Environment</a> (Note That these values are only valid in the demo version\r\n)\r\n<br />\r\nCollection : <a target=\"_blank\" href=\"docs/b2c.postman_collection.json\">Postman Collection</a>\r\n\r\n<table>\r\n    <thead>\r\n    <th>VARIABLE</th>\r\n    <th>INITIAL VALUE</th>\r\n    </thead>\r\n    <tbody>\r\n        <tr>\r\n            <td>baseUrl</td>\r\n            <td>https://beta-api.2ristpanel.com</td>\r\n        </tr>\r\n        <tr>\r\n            <td>publicKey</td>\r\n            <td>28GW9JEROEY5BDN</td>\r\n        </tr>\r\n        <tr>\r\n            <td>privateKey</td>\r\n            <td>8059c822-4205-472d-bc40-c5e8669af403</td>\r\n        </tr>\r\n        <tr>\r\n            <td>authorization</td>\r\n            <td></td>\r\n        </tr>\r\n    </tbody>\r\n</table>\r\n\r\n<h1 id=\"ok-result\">\r\n    Responses and Errors\r\n</h1>\r\n\r\nResult of Response 200 can be an object with the requested content or an error.\r\nYou can see the list of known errors below\r\n\r\n\r\n<table>\r\n    <thead>\r\n    <th>Code</th>\r\n    <th>Description</th>\r\n    <th>توضیحات</th>\r\n    </thead>\r\n    <tbody>\r\n        <tr>\r\n            <td>100</td>\r\n            <td>There is a problem with one of the Unique IDs sent. The name of the ID is mentioned in the error</td>\r\n            <td>ایرادی در یکی از آیدی های یونیک ارسالی وجود دارد. نام آی دی در ارور ذکر شده است</td>\r\n        </tr>\r\n        <tr>\r\n            <td>101</td>\r\n            <td>The requested number of one of the tickets is more than the inventory. The name of the requested ticket and the remaining number are mentioned in the error.</td>\r\n            <td>تعداد درخواستی یکی از تیکت ها بیشتر از  موجودی میباشد نام تیکت درخواستی و تعداد باقی مانده در ارور ذکر شده است</td>\r\n        </tr>\r\n        <tr>\r\n            <td>102</td>\r\n            <td>The requested service requires the names of the passengers. Please send the relevant field in a completed form. The service name is listed in the error</td>\r\n            <td>برنامه درخواستی نیاز به اسامی مسافران دارد لطفا فیلد مربوطه را به صورت تکمیل شده ارسال نمایید نام برنامه در ارور ذکر شده است</td>\r\n        </tr>\r\n        <tr>\r\n            <td>103</td>\r\n            <td>The requested service requires the names of the passengers along with the national code or passport number and its type. Please send the relevant field in a completed form. The service name is listed in the error</td>\r\n            <td>\r\n                سرویس درخواستی، نیاز به اسامی مسافران به همراه کد ملی یا شماره پاسپورت و نوع آن دارد لطفا فیلد مربوطه را به صورت تکمیل شده ارسال نمایید. نام سرویس در ارور ذکر شده است\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>104</td>\r\n            <td>\r\n                There is a problem with opening the cash desk automatically.\r\n                Please make sure that in the panel settings, the cash desk closure is activated automatically, and if         you have the open cash desk, close it and send the request again.\r\n            </td>\r\n            <td>\r\n                ایرادی در باز نمودن صندوق فروش به صورت اتوماتیک به وجود آمده است.\r\n                لطفا اطمینان حاصل نمایید که در تنظیمات پنل، بسته شدن صندوق فروش به صورت اتوماتیک فعال است و در صورتی که صندوق باز دارید آن را بسته و مجددا درخواست را ارسال نمایید.\r\n            </td>\r\n        </tr>\r\n        <tr>\r\n            <td>105</td>\r\n            <td>The temporary reservation reference has a problem, has been canceled or has been used before, please note that temporary reservations only take up to 30 minutes, after which your reference will be invalidated.</td>\r\n            <td>رفرنس رزرو موقت ایراد دارد، باطل شده و یا قبلا استفاده شده است است لطفا توجه داشته باشید که رزرو های موقت فقط تا 30 دقیقه زمان دارند و بعد از آن رفرنس شما باطل میشود  </td>\r\n        </tr>\r\n        <tr>\r\n            <td>106</td>\r\n            <td>You are allowed to book 7 items at a time and 15 tickets per item at each request. This error indicates that you have requested more than the specified number.</td>\r\n            <td>شما در هر درخواست اجازه رزرو موقت 7 آیتم و در هر آیتم 15 بلیط را دارا هستید این ارور نشان دهنده این است که شما بیش از تعداد ذکر شده درخواست داده اید</td>\r\n        </tr>\r\n        <tr>\r\n            <td>107</td>\r\n            <td>Booking time is over</td>\r\n            <td>زمان رزرو موقت به پایان رسیده است</td>\r\n        </tr>\r\n        <tr>\r\n            <td>108</td>\r\n            <td>The problem is with the information sent to the passenger list. Please check the manifest and send data again</td>\r\n            <td>ایراد مربوط به اطلاعات ارسالی در لیست مسافرین است. لطفا لیست را بررسی و مجددا ارسال نمایید</td>\r\n        </tr>\r\n        <tr>\r\n            <td>109</td>\r\n            <td>Your purchase credit on the panel is over or less than allowed. Please check and charge your credit</td>\r\n            <td>اعتبار خرید شما در پنل به اتمام رسیده یا کمتر از حد مجاز میباشد لطفا اعتبار خود را بررسی و شارژ نمایید</td>\r\n        </tr>\r\n        <tr>\r\n            <td>110</td>\r\n            <td>This license Is not valid on this Service or not valid at all</td>\r\n            <td>مجوز ارسالی برای این برنامه اعتبار ندارد</td>\r\n        </tr>\r\n    </tbody>\r\n</table>\r\n\r\n<h1 id=\"support\">Support</h1>\r\n<p>For help regarding accessing the 2ristPanel API, feel free to drop a ticket at our <a target=\"_blank\" href=\"https://support.2ristpanel.ir\">Support</a> system.</p>\r\n<p>In the event you receive a <code>503</code> response from our servers, it implies that we have hit an unexpected spike in API access traffic and would usually be operational within the next 5 minutes. If the outage persists, or your receive any other form of <code>5XX</code> error, kindly let us know.</p>\r\n\r\n\r\n<h1 id=\"terms-of-use\">Developer And Ownership Details</h1>\r\n\r\nLicenced To:\r\n<a href=\"http://ttgroup.ir/\" target=\"_blank\">Top Tours Group</a> / <a href=\"http://toptis.ir/\" target=\"_blank\">TopTis.co</a>\r\n<br />\r\nDeveloped By:\r\n<a href=\"https://pooriashariatzadeh.com\" target=\"_blank\">Pooria Shariatzadeh</a>\r\n\r\n",
+    "contact": {
+      "name": "Pooria Shariatzadeh",
+      "url": "https://www.pooriashariatzadeh.com",
+      "email": "Pooria.Shariatzadeh@gmail.com"
+    },
+    "license": {
+      "name": "Copyright © 2020 TopTis co",
+      "url": "http://TopTis.com"
+    },
+    "version": "1.3.0"
+  },
+  "paths": {
+    "/v1/B2C/Booking/GetActiveDestinations": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ActiveDestinations"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/GetActiveLicences": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Licence"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/GetWalletsBalance": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ActiveDestinations"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/GetServicesListAsync": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "parameters": [
+          {
+            "name": "CityCode",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "StateCode",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "HasActiveSans",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/GetAllServicesAsync": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "parameters": [
+          {
+            "name": "CityCode",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "StateCode",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "HasActiveSans",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/GetServiceAsync": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "parameters": [
+          {
+            "name": "ServiceUniqueId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/GetAvailableSansAsync": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "parameters": [
+          {
+            "name": "ServiceUniqueId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "LicenseUniqueId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "PersianDate",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "TicketTypeUniqueIds",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/CheckItemAvailabilityAsync": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "parameters": [
+          {
+            "name": "TicketTypeUniqueId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "SansUniqueId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "LicenseUniqueId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Number",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/TempBookingAsync": {
+      "post": {
+        "tags": [
+          "Booking"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json;odata.metadata=minimal;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json;odata.metadata=minimal;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json;odata.metadata=minimal": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json;odata.metadata=full;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json;odata.metadata=full;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json;odata.metadata=full": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json;odata.metadata=none;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json;odata.metadata=none;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json;odata.metadata=none": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/prs.odatatestxx-odata": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/CancelingTempBookingAsync": {
+      "delete": {
+        "tags": [
+          "Booking"
+        ],
+        "parameters": [
+          {
+            "name": "TempBookingReference",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/FinalizingBookingAsync": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "parameters": [
+          {
+            "name": "TempBookingReference",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          {
+            "name": "DiscountAmount",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "SendSMS",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/GetSalonViewOnlyUrl": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "parameters": [
+          {
+            "name": "LicenseUniqueId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "SansUniqueId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/CreateTempShoppingCartForSalonSeatReservation": {
+      "post": {
+        "tags": [
+          "Booking"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json;odata.metadata=minimal;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json;odata.metadata=minimal;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json;odata.metadata=minimal": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json;odata.metadata=full;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json;odata.metadata=full;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json;odata.metadata=full": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json;odata.metadata=none;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json;odata.metadata=none;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json;odata.metadata=none": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json;odata.streaming=true": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json;odata.streaming=false": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/prs.odatatestxx-odata": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateNewShoppingCartForSalonSeatReservationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ResultNotificationViewType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "ResultNotificationType": {
+        "enum": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "OKResult": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "nullable": true,
+            "readOnly": true
+          },
+          "notificationViewType": {
+            "$ref": "#/components/schemas/ResultNotificationViewType"
+          },
+          "notificationType": {
+            "$ref": "#/components/schemas/ResultNotificationType"
+          },
+          "state": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ActiveDestinations": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "titleNative": {
+            "type": "string",
+            "nullable": true
+          },
+          "stateCode": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "cityCode": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "activityCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Licence": {
+        "type": "object",
+        "properties": {
+          "licenceUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "issuedBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UniqueNumberType": {
+        "enum": [
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "ManifestDto": {
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string",
+            "nullable": true
+          },
+          "uniqueNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "uniqueNumberType": {
+            "$ref": "#/components/schemas/UniqueNumberType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BookItem": {
+        "required": [
+          "licenseUniqueId",
+          "sansUniqueId",
+          "ticketTypeUniqueId"
+        ],
+        "type": "object",
+        "properties": {
+          "licenseUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sansUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ticketTypeUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "manifest": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ManifestDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BookingDto": {
+        "required": [
+          "fullName",
+          "mobilePhone"
+        ],
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string"
+          },
+          "mobilePhone": {
+            "pattern": "^([0-9]{11})$",
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "residence": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "internalInvoiceNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "bookItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BookItem"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateNewShoppingCartForSalonSeatReservationDto": {
+        "required": [
+          "fullName",
+          "mobilePhone"
+        ],
+        "type": "object",
+        "properties": {
+          "fullName": {
+            "type": "string"
+          },
+          "mobilePhone": {
+            "pattern": "^([0-9]{11})$",
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "residence": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "internalInvoiceNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "sansUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "licenseUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
