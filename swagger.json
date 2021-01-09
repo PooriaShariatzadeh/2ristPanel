@@ -15,6 +15,78 @@
     "version": "1.3.0"
   },
   "paths": {
+      "/v1/API/GenerateNewToken": {
+      "post": {
+        "tags": [
+          "API"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TokenResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/B2C/Booking/GetActiveDestinations": {
       "get": {
         "tags": [
@@ -1372,6 +1444,16 @@
           "activityCount": {
             "type": "integer",
             "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+	  "TokenResult": {
+        "type": "object",
+        "properties": {
+          "authorization": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
