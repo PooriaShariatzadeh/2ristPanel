@@ -38,11 +38,7 @@
     <script>
     window.onload = function() {
       // Begin Swagger UI call region
-	  var apiMap = {};
-        apiMap["/api-docs/"] = "swagger.json";
-        apiMap["/api-external/"] = "swagger-external.json";
-        apiMap["/api-admin/"] = "swagger-admin.json";
-	  
+  
       const ui = SwaggerUIBundle({
         url: "https://pooriashariatzadeh.github.io/2ristPanel-b2c-api-docs/swagger.json",
         dom_id: '#swagger-ui',
