@@ -185,8 +185,8 @@ GenerateNewToken
 
 ##### Parameters
 
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
+| Name  | Description | Required | Schema |
+| publicKey  | Created in Your Panel | yes | string |
 
 ##### Responses
 
