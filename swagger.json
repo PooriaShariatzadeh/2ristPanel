@@ -20,6 +20,7 @@
         "tags": [
           "API"
         ],
+        "summary": "GenerateNewToken",
         "requestBody": {
           "content": {
             "application/json;odata.metadata=minimal;odata.streaming=true": {
@@ -128,6 +129,8 @@
         "tags": [
           "Booking"
         ],
+        "summary": "Active Destinations",
+        "description": "It will send you all the tourist destinations that are active in the system along with the required IDs.",
         "responses": {
           "200": {
             "description": "Success",
@@ -200,6 +203,8 @@
         "tags": [
           "Booking"
         ],
+        "summary": "Active Licences",
+        "description": "It will send you all your active licenses",
         "responses": {
           "200": {
             "description": "Success",
@@ -272,6 +277,8 @@
         "tags": [
           "Booking"
         ],
+        "summary": "Wallets Balance",
+        "description": "It will send you the balance of the system wallet and all other wallets (please note that it is very important to keep your wallet charged at all times so that your customers' purchases do not face problems)",
         "responses": {
           "200": {
             "description": "Success",
@@ -339,17 +346,21 @@
         }
       }
     },
-    "/v1/B2C/Booking/GetServicesListAsync": {
+    "/v1/B2C/Booking/ServicesDetailAsync": {
       "get": {
         "tags": [
           "Booking"
         ],
+        "summary": "Services Detail",
+        "description": "This method sends you a paginated list of all services with complete specifications",
         "parameters": [
           {
             "name": "CityCode",
             "in": "query",
+            "description": "Optional",
             "schema": {
               "type": "integer",
+              "description": "Optional",
               "format": "int64",
               "nullable": true
             }
@@ -357,8 +368,10 @@
           {
             "name": "StateCode",
             "in": "query",
+            "description": "Optional",
             "schema": {
               "type": "integer",
+              "description": "Optional",
               "format": "int64",
               "nullable": true
             }
@@ -366,9 +379,22 @@
           {
             "name": "HasActiveSans",
             "in": "query",
+            "description": "Optional",
             "schema": {
               "type": "boolean",
+              "description": "Optional",
               "default": false
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "description": "The value of this field is 1 by default. You can change this value to get the next pages (Required)",
+            "schema": {
+              "type": "integer",
+              "description": "The value of this field is 1 by default. You can change this value to get the next pages (Required)",
+              "format": "int32",
+              "default": 1
             }
           }
         ],
@@ -378,8 +404,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": false
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Service"
+                  }
                 }
               }
             }
@@ -442,12 +470,16 @@
         "tags": [
           "Booking"
         ],
+        "summary": "All Services",
+        "description": "This method will send you a list of all services with the minimum information needed for the next steps.\r\nAnd you can filter this method by provided params",
         "parameters": [
           {
             "name": "CityCode",
             "in": "query",
+            "description": "Optional",
             "schema": {
               "type": "integer",
+              "description": "Optional",
               "format": "int64",
               "nullable": true
             }
@@ -455,8 +487,10 @@
           {
             "name": "StateCode",
             "in": "query",
+            "description": "Optional",
             "schema": {
               "type": "integer",
+              "description": "Optional",
               "format": "int64",
               "nullable": true
             }
@@ -464,9 +498,27 @@
           {
             "name": "HasActiveSans",
             "in": "query",
+            "description": "Optional",
             "schema": {
               "type": "boolean",
+              "description": "Optional",
               "default": false
+            }
+          },
+          {
+            "name": "EventType",
+            "in": "query",
+            "description": "Optional",
+            "schema": {
+              "$ref": "#/components/schemas/EventType"
+            }
+          },
+          {
+            "name": "EventCategory",
+            "in": "query",
+            "description": "Optional",
+            "schema": {
+              "$ref": "#/components/schemas/EventCategory"
             }
           }
         ],
@@ -476,8 +528,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": false
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ServiceList"
+                  }
                 }
               }
             }
@@ -540,12 +594,16 @@
         "tags": [
           "Booking"
         ],
+        "summary": "Service",
+        "description": "This method sends complete information about the requested service",
         "parameters": [
           {
             "name": "ServiceUniqueId",
             "in": "query",
+            "description": "Required",
             "schema": {
               "type": "string",
+              "description": "Required",
               "format": "uuid"
             }
           }
@@ -556,8 +614,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": false
+                  "$ref": "#/components/schemas/Service"
                 }
               }
             }
@@ -620,36 +677,57 @@
         "tags": [
           "Booking"
         ],
+        "summary": "Available Sans",
+        "description": "With this method, after sending the required values of ServiceUniqueId and LicenseUniqueId, Get Result of all the event sans and ticket types of a service that are needed for temporary booking.",
         "parameters": [
           {
             "name": "ServiceUniqueId",
             "in": "query",
+            "description": "Required",
             "schema": {
               "type": "string",
+              "description": "Required",
               "format": "uuid"
             }
           },
           {
             "name": "LicenseUniqueId",
             "in": "query",
+            "description": "Required",
             "schema": {
               "type": "string",
+              "description": "Required",
               "format": "uuid"
             }
           },
           {
             "name": "PersianDate",
             "in": "query",
+            "description": "By sending the PersianDate (optional), you can receive the desired event sans of that day \r\nSample : 1399/10/22",
             "schema": {
               "type": "string",
+              "description": "By sending the PersianDate (optional), you can receive the desired event sans of that day \r\nSample : 1399/10/22",
               "nullable": true
             }
           },
           {
             "name": "TicketTypeUniqueIds",
             "in": "query",
+            "description": "By sending the TicketTypeUniqueIds (optional), you can filter the desired ticket types. All you have to do is separate the type of tickets you want with ',' and send them as a string\r\nSample : e8161576-a229-4d6d-9053-3380d482278e,9d29c72e-c9e4-4906-aed1-ca2379ced03f",
             "schema": {
               "type": "string",
+              "description": "By sending the TicketTypeUniqueIds (optional), you can filter the desired ticket types. All you have to do is separate the type of tickets you want with ',' and send them as a string\r\nSample : e8161576-a229-4d6d-9053-3380d482278e,9d29c72e-c9e4-4906-aed1-ca2379ced03f",
+              "nullable": true
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "description": "To receive the data in batches of 15, it is enough to send the desired page. If the page is not sent, all available event sans will be returned. (optional)",
+            "schema": {
+              "type": "integer",
+              "description": "To receive the data in batches of 15, it is enough to send the desired page. If the page is not sent, all available event sans will be returned. (optional)",
+              "format": "int32",
               "nullable": true
             }
           }
@@ -660,8 +738,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": false
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SansList"
+                  }
                 }
               }
             }
@@ -724,36 +804,46 @@
         "tags": [
           "Booking"
         ],
+        "summary": "Check Item Availability",
+        "description": "You can use this method to ensure that the item can be booked before temporary booking",
         "parameters": [
           {
             "name": "TicketTypeUniqueId",
             "in": "query",
+            "description": "Required",
             "schema": {
               "type": "string",
+              "description": "Required",
               "format": "uuid"
             }
           },
           {
             "name": "SansUniqueId",
             "in": "query",
+            "description": "Required",
             "schema": {
               "type": "string",
+              "description": "Required",
               "format": "uuid"
             }
           },
           {
             "name": "LicenseUniqueId",
             "in": "query",
+            "description": "Required",
             "schema": {
               "type": "string",
+              "description": "Required",
               "format": "uuid"
             }
           },
           {
             "name": "Number",
             "in": "query",
+            "description": "Number of tickets requested (Required)",
             "schema": {
               "type": "integer",
+              "description": "Number of tickets requested (Required)",
               "format": "int32"
             }
           }
@@ -764,8 +854,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": false
+                  "$ref": "#/components/schemas/ItemAvailabilityResult"
                 }
               }
             }
@@ -828,6 +917,8 @@
         "tags": [
           "Booking"
         ],
+        "summary": "Temp Booking",
+        "description": "<br>After selecting the type of ticket and event sans's desired by the user for temporary reservation, you can use this method\r\n<br>FullName and mobilePhone are required\r\n<br>In the bookItems array, you can send a maximum of 7 Sans, and in each Sans, you can send a maximum of 15 tickets.If the number of tickets or the number of Sans is more than the allowed limit, your temporary reservation will not be made.\r\n<br>Please note that if the value of isManifestNeeded in the GetServiceAsync method is equal to true, you must send the list of names of the passengers in the manifest field equal to the number of requested tickets.\r\n<br>Also, if the field isManifestUniqueNumberNeeded is equal to true, the two fields uniqueNumberType and uniqueNumber should be sent.\r\n<br>The value of uniqueNumberType, if the type is uniqueNumber, is the national code of Iran 1 and the passport number 2 should be sent.",
         "requestBody": {
           "content": {
             "application/json;odata.metadata=minimal;odata.streaming=true": {
@@ -923,271 +1014,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "406": {
-            "description": "Not Acceptable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/B2C/Booking/CancelingTempBookingAsync": {
-      "delete": {
-        "tags": [
-          "Booking"
-        ],
-        "parameters": [
-          {
-            "name": "TempBookingReference",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "406": {
-            "description": "Not Acceptable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/B2C/Booking/FinalizingBookingAsync": {
-      "get": {
-        "tags": [
-          "Booking"
-        ],
-        "parameters": [
-          {
-            "name": "TempBookingReference",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          },
-          {
-            "name": "DiscountAmount",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "SendSMS",
-            "in": "query",
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "406": {
-            "description": "Not Acceptable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OKResult"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/B2C/Booking/GetSalonViewOnlyUrl": {
-      "get": {
-        "tags": [
-          "Booking"
-        ],
-        "parameters": [
-          {
-            "name": "LicenseUniqueId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "SansUniqueId",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": false
+                  "$ref": "#/components/schemas/TempBookingResult"
                 }
               }
             }
@@ -1250,6 +1077,8 @@
         "tags": [
           "Booking"
         ],
+        "summary": "Create Temp ShoppingCart For Salon Seat Reservation",
+        "description": "After you submit your request to create a new shopping cart, \r\nsalon url back to you by the result and Then you can display the link in the iframe to call the final method after the user seat selection session is over.",
         "requestBody": {
           "content": {
             "application/json;odata.metadata=minimal;odata.streaming=true": {
@@ -1345,8 +1174,368 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": false
+                  "$ref": "#/components/schemas/TempShoppingCartResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/GetTempReservedItems": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "summary": "Temp Reserved Items",
+        "description": "After submitting a request to create  a Temporary Shopping Cart, You can retrieve a list of booked items with this method.",
+        "parameters": [
+          {
+            "name": "TempShoppingCartUniqueId",
+            "in": "query",
+            "description": "TempShoppingCartUniqueId is present at TempBookingAsync And CreateTempShoppingCartForSalonSeatReservation Result (Required)",
+            "schema": {
+              "type": "string",
+              "description": "TempShoppingCartUniqueId is present at TempBookingAsync And CreateTempShoppingCartForSalonSeatReservation Result (Required)",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TempReservedItem"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/GetSalonViewOnlyUrl": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "summary": "Get Salon View-Only URL",
+        "description": "This method returns a web address with which you can only view the hall (reserved seats).",
+        "parameters": [
+          {
+            "name": "LicenseUniqueId",
+            "in": "query",
+            "description": "Required",
+            "schema": {
+              "type": "string",
+              "description": "Required",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "SansUniqueId",
+            "in": "query",
+            "description": "Required",
+            "schema": {
+              "type": "string",
+              "description": "Required",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/CancelingTempBookingAsync": {
+      "delete": {
+        "tags": [
+          "Booking"
+        ],
+        "summary": "Canceling Temp Bookings",
+        "description": "If the user cancels his purchase or for any reason you do not need the shopping cart, use this method to cancel your temporary reservation. Note that providers can view the behavior of temporary reservations.\r\nSo if you make a lot of temporary reservations, suppliers will be able to block their services on you.",
+        "parameters": [
+          {
+            "name": "TempBookingReference",
+            "in": "query",
+            "description": "Required",
+            "schema": {
+              "type": "string",
+              "description": "Required",
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "406": {
+            "description": "Not Acceptable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OKResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/B2C/Booking/FinalizingBookingAsync": {
+      "get": {
+        "tags": [
+          "Booking"
+        ],
+        "summary": "Finalizing Booking",
+        "description": "After your user returns from the payment gateway and his payment is confirmed by your server, you can use this method to finalize the user's temporary reservation.",
+        "parameters": [
+          {
+            "name": "TempBookingReference",
+            "in": "query",
+            "description": "Required",
+            "schema": {
+              "type": "string",
+              "description": "Required",
+              "nullable": true
+            }
+          },
+          {
+            "name": "DiscountAmount",
+            "in": "query",
+            "description": "Required",
+            "schema": {
+              "type": "number",
+              "description": "Required",
+              "format": "double"
+            }
+          },
+          {
+            "name": "SendSMS",
+            "in": "query",
+            "description": "Required",
+            "schema": {
+              "type": "boolean",
+              "description": "Required"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinalizingBookingResult"
                 }
               }
             }
@@ -1526,6 +1715,243 @@
         },
         "additionalProperties": false
       },
+      "ReferenceTicketType": {
+        "type": "object",
+        "properties": {
+          "ticketTypeUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Service": {
+        "type": "object",
+        "properties": {
+          "serviceUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "eventCategory": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "rules": {
+            "type": "string",
+            "nullable": true
+          },
+          "coverImage": {
+            "type": "string",
+            "nullable": true
+          },
+          "gallery": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "isManifestNeeded": {
+            "type": "boolean"
+          },
+          "isManifestUniqueNumberNeeded": {
+            "type": "boolean"
+          },
+          "licences": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Licence"
+            },
+            "nullable": true
+          },
+          "ticketTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReferenceTicketType"
+            },
+            "nullable": true
+          },
+          "hasActiveSans": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EventType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "EventCategory": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "ServiceList": {
+        "type": "object",
+        "properties": {
+          "serviceUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "eventType": {
+            "$ref": "#/components/schemas/EventType"
+          },
+          "eventCategory": {
+            "$ref": "#/components/schemas/EventCategory"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TicketType": {
+        "type": "object",
+        "properties": {
+          "ticketTypeUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "commission": {
+            "type": "number",
+            "format": "double"
+          },
+          "remaining": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "customTitle": {
+            "type": "string",
+            "nullable": true
+          },
+          "discountAmount": {
+            "type": "number",
+            "format": "double"
+          },
+          "discountPercent": {
+            "type": "number",
+            "format": "float"
+          },
+          "priceAfterDiscount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SansList": {
+        "type": "object",
+        "properties": {
+          "sansUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "date": {
+            "type": "string",
+            "nullable": true
+          },
+          "start": {
+            "type": "string",
+            "nullable": true
+          },
+          "end": {
+            "type": "string",
+            "nullable": true
+          },
+          "remainingCapacity": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "label": {
+            "type": "string",
+            "nullable": true
+          },
+          "ticketTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketType"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ItemAvailabilityResult": {
+        "type": "object",
+        "properties": {
+          "isAvailable": {
+            "type": "boolean"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "persianDateTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "ticketPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "priceAfterDiscount": {
+            "type": "number",
+            "format": "double"
+          },
+          "remaining": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ticketTypeUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
       "UniqueNumberType": {
         "enum": [
           1,
@@ -1625,6 +2051,28 @@
         },
         "additionalProperties": false
       },
+      "TempBookingResult": {
+        "type": "object",
+        "properties": {
+          "tempBookingReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "expireDateTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "expireDateTimeUTC": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "tempShoppingCartUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateNewShoppingCartForSalonSeatReservationDto": {
         "required": [
           "fullName",
@@ -1662,6 +2110,113 @@
           "licenseUniqueId": {
             "type": "string",
             "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TempShoppingCartResult": {
+        "type": "object",
+        "properties": {
+          "expireDateTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "salonUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "tempBookingReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "tempShoppingCartUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TempReservedItem": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "persianDateTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "ticketPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "ticketNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "priceAfterDiscount": {
+            "type": "number",
+            "format": "double"
+          },
+          "serviceUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "sansUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "licenseUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ticketTypeUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TicketsLink": {
+        "type": "object",
+        "properties": {
+          "sansUniqueId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "link": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FinalizingBookingResult": {
+        "type": "object",
+        "properties": {
+          "bookingReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "ticketsLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "eventsTickets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketsLink"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false
