@@ -3837,6 +3837,71 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "GenerateNewToken",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"publicKey\": \"<string>\",\r\n  \"privateKey\": \"<string>\"\r\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v1/API/GenerateNewToken",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v1",
+						"API",
+						"GenerateNewToken"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"publicKey\": \"<string>\",\n    \"privateKey\": \"<string>\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/v1/API/GenerateNewToken",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"v1",
+								"API",
+								"GenerateNewToken"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						}
+					],
+					"cookie": [],
+					"body": "{\n \"authorization\": \"<string>\"\n}"
+				}
+			]
 		}
 	],
 	"variable": [
